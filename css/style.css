@@ -1,0 +1,58 @@
+/*.orders-single-outer{
+	width:25%;
+	float:left;
+	padding-left: 15px;
+}*/
+
+.orders-single{
+	border: solid 1px #fafafa;
+	padding:10px;
+	box-shadow: 2px 2px 5px -2px rgba(0,0,0,0.8);
+	background:rgba(255,255,255,0.9);
+}
+
+.new-form{
+	position: fixed;
+	top: 20px;
+	right:20px;
+	padding: 10px;
+	background: #fafafa;
+	border: #afafaf;
+}
+
+.rem-Details {
+    min-height: 100px;
+    background: #efefef;
+    padding:  5px;
+}
+
+.rem-EventDate {
+    font-weight: bold;
+    color: #6a6ae4;
+    float:right;
+}
+
+.rem-Name {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.rem-Email{
+	clear:both;
+}
+
+.main-title{
+	color:#fff;
+	text-shadow: 0 0 6px #FF0000;
+}
+
+.orders-single-outer {
+    margin-bottom: 10px;
+}
+
+@media(min-width: 768px){
+	.outer-edge{
+		max-width:90%;
+		margin:auto;
+	}
+}
