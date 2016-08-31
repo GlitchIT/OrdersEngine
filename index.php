@@ -149,6 +149,7 @@ function getAllOrders(){
 				case "Name":
 				case "EventDate":
 				case "CANCELLED":
+				case "COMPLETED":
 					break;
 
 				case "TotalPaid":

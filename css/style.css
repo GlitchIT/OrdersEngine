@@ -50,6 +50,14 @@
     margin-bottom: 10px;
 }
 
+.order-cancelled{
+	background: rgba(50,50,50,0.9);
+}
+
+.order-cancelled *{
+	color: #888 !important;
+}
+
 @media(min-width: 768px){
 	.outer-edge{
 		max-width:90%;
