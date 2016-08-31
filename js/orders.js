@@ -75,4 +75,42 @@ function setTriggers(){
 			}
 		});
 	});
+
+	$('.completeOrder').click(function(){
+		var id = $(this).attr('data-orders-id');
+		$.ajax({
+			method:"POST",
+			data:{
+				action:"completeOrder",
+				ID:id
+			},
+			dataType:"json"
+		}).done(function(data){
+			if(data.error){
+				UIkit.notify(data.error,{status:'danger'});
+			}else if(data.success){
+				UIkit.notify(data.success,{status:'success'});
+				refreshOrders();
+			}
+		});
+	});
+
+	$('.cancelOrder').click(function(){
+		var id = $(this).attr('data-orders-id');
+		$.ajax({
+			method:"POST",
+			data:{
+				action:"cancelOrder",
+				ID:id
+			},
+			dataType:"json"
+		}).done(function(data){
+			if(data.error){
+				UIkit.notify(data.error,{status:'danger'});
+			}else if(data.success){
+				UIkit.notify(data.success,{status:'success'});
+				refreshOrders();
+			}
+		});
+	});
 }

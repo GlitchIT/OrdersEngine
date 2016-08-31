@@ -117,15 +117,28 @@ function doAction($action){
 		case "getAllOrders":
 			getAllOrders();
 			break;
+
+		case "cancelOrder":
+			cancelOrder($_POST['ID']);
+			break;
+
+		case "completeOrder":
+			completeOrder($_POST['ID']);
+			break;
 	}
 }
 
 function getAllOrders(){
 	global $db;
-	$res = $db->multiRowQuery("SELECT * FROM orders ORDER BY EventDate;");
+	$res = $db->multiRowQuery("SELECT * FROM orders WHERE COMPLETED=0 ORDER BY EventDate;");
 	foreach($res as $orders){
 		$isTotalPaid = false;
-		echo '<div class="orders-single-outer" id="orders-'.$orders['ID'].'"><div class="uk-panel orders-single">';
+
+		$classes = $orders['CANCELLED'] == 1 ? ' order-cancelled' : '';
+		$classes .= $orders['CANCELLED'] == 1 ? ' order-cancelled' : '';
+
+
+		echo '<div class="orders-single-outer" id="orders-'.$orders['ID'].'"><div class="uk-panel orders-single '.$classes.'">';
 		echo '<div class="rem-EventDate">'.$orders['EventDate'].'</div>';
 		echo '<div class="rem-Name"><a href="mailto:'.$orders['Email'].'">'.$orders["Name"].'</a></div>';
 		foreach($orders as $key => $value){
@@ -172,7 +185,7 @@ function getAllOrders(){
 					break;
 			}
 		}
-		echo '<div id="action-buttons"><button class="uk-button payDeposit" data-orders-id="'.$orders['ID'].'" title="Pay Deposit"><i class="uk-icon uk-icon-dollar"></i></button>  <button class="uk-button payTotal" data-orders-id="'.$orders['ID'].'" title="Pay Total"><i class="uk-icon uk-icon-dollar"></i><i class="uk-icon uk-icon-dollar"></i></button>  <button class="uk-button editorders" data-orders-id="'.$orders['ID'].'" title="Edit orders"><i class="uk-icon uk-icon-edit"></i></button></div>
+		echo '<div id="action-buttons"><button class="uk-button payDeposit" data-orders-id="'.$orders['ID'].'" title="Pay Deposit"><i class="uk-icon uk-icon-dollar"></i></button>  <button class="uk-button payTotal" data-orders-id="'.$orders['ID'].'" title="Pay Total"><i class="uk-icon uk-icon-dollar"></i><i class="uk-icon uk-icon-dollar"></i></button>  <button class="uk-button editorders" data-orders-id="'.$orders['ID'].'" title="Edit orders"><i class="uk-icon uk-icon-edit"></i></button>  <button class="uk-button uk-button-success completeOrder" data-orders-id="'.$orders['ID'].'" title="Complete order"><i class="uk-icon uk-icon-check"></i></button>  <button class="uk-button uk-button-danger cancelOrder" data-orders-id="'.$orders['ID'].'" title="Cancel order"><i class="uk-icon uk-icon-ban"></i></button></div>
 		</div></div>';
 	}
 }
@@ -245,4 +258,23 @@ function getOption($name){
 function setOption($name,$value){
 	global $db;
 	return $db->execQuery("INSERT INTO options (`name`,`value`) VALUES ('$name','$value') ON DUPLICATE KEY UPDATE `value`='$value';");
+}
+
+
+function completeOrder($ID){
+	global $db;
+	if($db->execQuery("UPDATE orders SET `COMPLETED`=1 WHERE `ID`=$ID;")){
+		echo '{"success":"successfully added deposit payment for orders '.$ID.'"}';
+	}else{
+		echo '{"error":"coudn\'t complete order '.$ID.', please try again"}';
+	}
+}
+
+function cancelOrder($ID){
+	global $db;
+	if($db->execQuery("UPDATE orders SET `CANCELLED`=1 WHERE `ID`=$ID;")){
+		echo '{"success":"successfully added deposit payment for orders '.$ID.'"}';
+	}else{
+		echo '{"error":"coudn\'t cancel order '.$ID.', please try again"}';
+	}
 }
